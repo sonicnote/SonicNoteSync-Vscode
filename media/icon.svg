@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+  <!-- Headband arc -->
+  <path d="M 5 13 C 5 8.03 9.03 4 14 4 C 18.97 4 23 8.03 23 13"
+        fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Left earcup -->
+  <rect x="2" y="13" width="7" height="9" rx="2" ry="2"
+        fill="none" stroke="#ffffff" stroke-width="2.2"/>
+  <rect x="4" y="15" width="3" height="5" rx="1" ry="1"
+        fill="#ffffff"/>
+  <!-- Right earcup -->
+  <rect x="19" y="13" width="7" height="9" rx="2" ry="2"
+        fill="none" stroke="#ffffff" stroke-width="2.2"/>
+  <rect x="21" y="15" width="3" height="5" rx="1" ry="1"
+        fill="#ffffff"/>
+</svg>

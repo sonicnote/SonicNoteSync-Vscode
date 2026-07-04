@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SonicNoteSync-Vscode - 妙记录音同步 VSCode 插件</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --border: #ebedf0;
+    --text: #1d2129;
+    --text-secondary: #656a72;
+    --accent: #333;
+    --accent-light: #f0f1f3;
+    --code-bg: #1e1e2e;
+    --code-text: #cdd6f4;
+    --radius: 8px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 24px 28px;
+    text-align: center;
+  }
+  .header .version {
+    display: inline-block;
+    background: var(--accent-light);
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
+  .header p { font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 18px; }
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: #fff;
+    padding: 9px 28px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .download-btn:hover { opacity: 0.82; }
+  .download-btn svg { width: 16px; height: 16px; }
+  .container { max-width: 700px; margin: 0 auto; padding: 24px 20px 60px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin-bottom: 14px;
+  }
+  .card h2 {
+    font-size: 1.05rem;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card h3 { font-size: 0.92rem; margin: 16px 0 6px; font-weight: 600; }
+  .card p, .card li { color: var(--text-secondary); font-size: 0.9rem; }
+  .card ol, .card ul { padding-left: 18px; margin: 4px 0; }
+  .card li { margin-bottom: 2px; }
+  .highlight-box {
+    background: #fef9e7;
+    border: 1px solid #f9e79f;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 0.88rem;
+    color: #7d6608;
+  }
+  .highlight-box strong { color: #6e5806; }
+  .code-wrap {
+    position: relative;
+    margin: 8px 0;
+  }
+  .code-wrap pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 12px 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 4px;
+    padding: 4px 7px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+    color: #aaa;
+    line-height: 1;
+  }
+  .code-wrap:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+  .copy-btn.copied { opacity: 1; color: #4ade80; }
+  code { font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace; }
+  .inline-code {
+    background: var(--accent-light);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.85em;
+    color: var(--text);
+  }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  th { text-align: left; padding: 7px 12px; background: var(--accent-light); font-weight: 600; font-size: 0.85rem; }
+  td { padding: 7px 12px; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .feature-item {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .feature-item .icon { font-size: 1.2rem; margin-bottom: 4px; }
+  .feature-item .title { font-weight: 600; font-size: 0.9rem; color: var(--text); margin-bottom: 2px; }
+  .feature-item .desc { font-size: 0.82rem; color: var(--text-secondary); }
+  .faq-item { margin-bottom: 10px; }
+  .faq-item .q { font-weight: 600; color: var(--text); margin-bottom: 2px; font-size: 0.9rem; }
+  .faq-item .a { color: var(--text-secondary); font-size: 0.88rem; margin-left: 0; }
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+  }
+  @media (max-width: 640px) {
+    .header { padding: 28px 16px 22px; }
+    .header h1 { font-size: 1.35rem; }
+    .card { padding: 18px 16px; }
+    .features { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="version">v1.0.0</div>
+  <h1>SonicNoteSync-Vscode</h1>
+  <p>妙记录音同步 VSCode 插件 — 一键拉取录音、转录、总结为本地 Markdown 文件</p>
+  <a class="download-btn" href="https://linkaip.easylinkin.com/public/SonicNoteSync-vscode-1.0.0.vsix" download>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    下载安装包
+  </a>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>前置要求</h2>
+    <ul>
+      <li><a href="https://code.visualstudio.com" target="_blank">Visual Studio Code</a> >= 1.85.0</li>
+      <li>妙记账号（用于获取 MCP Key）</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>功能特性</h2>
+    <div class="features">
+      <div class="feature-item">
+        <div class="icon">🔄</div>
+        <div class="title">录音同步</div>
+        <div class="desc">从妙记服务器拉取录音列表，同步为本地 Markdown 文件</div>
+      </div>
+      <div class="feature-item">
+        <div class="icon">📝</div>
+        <div class="title">逐字转录</div>
+        <div class="desc">自动获取录音的转写文本，支持说话人标注</div>
+      </div>
+      <div class="feature-item">
+        <div class="icon">🤖</div>
+        <div class="title">AI 智能总结</div>
+        <div class="desc">内置 AI 总结模板，自动生成会议纪要、课堂笔记等</div>
+      </div>
+      <div class="feature-item">
+        <div class="icon">📁</div>
+        <div class="title">本地化管理</div>
+        <div class="desc">文件列表支持打开、访达查看、复制内容、删除等操作</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>安装方法</h2>
+
+    <h3>方法一：命令行安装（推荐）</h3>
+    <ol>
+      <li>点击上方按钮下载 <span class="inline-code">SonicNoteSync-vscode-1.0.0.vsix</span></li>
+      <li>打开终端，运行安装命令：</li>
+    </ol>
+    <div class="code-wrap"><button class="copy-btn" title="复制"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button><pre><code>code --install-extension SonicNoteSync-vscode-1.0.0.vsix --force</code></pre></div>
+    <p>如果 <span class="inline-code">code</span> 命令未配置，先在 VSCode 中按 <span class="inline-code">⇧⌘P</span>，输入 <span class="inline-code">Shell Command: Install 'code' command in PATH</span> 进行安装。</p>
+
+    <h3>方法二：界面安装</h3>
+    <ol>
+      <li>下载 <span class="inline-code">.vsix</span> 文件</li>
+      <li>打开 VSCode → 扩展面板 (<span class="inline-code">⇧⌘X</span>) → 点击右上角 <span class="inline-code">⋯</span> → <span class="inline-code">从 VSIX 安装...</span></li>
+      <li>选择下载的 <span class="inline-code">.vsix</span> 文件完成安装</li>
+    </ol>
+
+    <div class="highlight-box">
+      <strong>提示：</strong>安装前请关闭 VSCode 中已打开的 SonicNoteSync 插件实例（如有），避免冲突。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>快速开始</h2>
+    <ol>
+      <li>点击 VSCode 左侧活动栏的 <strong>SonicNote Sync</strong> 图标打开侧边栏</li>
+      <li>在设置面板中填入 <strong>API 地址</strong> 和 <strong>MCP Key</strong>（获取方式见下方）</li>
+      <li>点击 <strong>登录</strong> 完成认证</li>
+      <li>点击 <strong>选择同步文件夹</strong> 设置 Markdown 文件存放目录</li>
+      <li>点击 <strong>同步录音</strong> 拉取录音并生成 Markdown 文件</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>MCP Key 获取方式</h2>
+    <ol>
+      <li>打开妙记 App</li>
+      <li>进入 <strong>我的 → MCP Key 管理</strong></li>
+      <li>点击 <strong>创建 Key</strong>，复制生成的 Key（格式：<span class="inline-code">sk-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span>）</li>
+      <li>回到 VSCode 插件面板，粘贴 Key 后点击登录</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>配置说明</h2>
+    <table>
+      <thead><tr><th>配置项</th><th>说明</th><th>默认值</th></tr></thead>
+      <tbody>
+        <tr><td>API 地址</td><td>SonicNote 服务器地址</td><td><span class="inline-code">https://ainote.easylinkin.com:18048/prod-api</span></td></tr>
+        <tr><td>同步目录</td><td>Markdown 文件存放路径</td><td><span class="inline-code">~/Documents/SonicNoteSync</span></td></tr>
+        <tr><td>每页数量</td><td>每次获取的录音条数</td><td>50</td></tr>
+        <tr><td>包含转录</td><td>是否同步逐字转写内容</td><td>开启</td></tr>
+        <tr><td>自动同步</td><td>启动 VSCode 时自动同步</td><td>关闭</td></tr>
+        <tr><td>定时重同步</td><td>间隔分钟数自动重新同步</td><td>0（关闭）</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:8px;">可在 VSCode 设置 (<span class="inline-code">⌘,</span>) 中搜索 <span class="inline-code">sonicnote-sync</span> 查看所有配置项。</p>
+  </div>
+
+  <div class="card">
+    <h2>常见问题</h2>
+    <div class="faq-item">
+      <p class="q">Q: 登录失败提示 "认证失败"？</p>
+      <p class="a">A: 请检查 MCP Key 是否正确，以及 API 地址是否可访问。Key 格式应为 <span class="inline-code">sk-</span> 开头。</p>
+    </div>
+    <div class="faq-item">
+      <p class="q">Q: 同步后没有生成文件？</p>
+      <p class="a">A: 请检查同步文件夹路径是否有写入权限，以及录音列表中是否有已转录完成的录音。</p>
+    </div>
+    <div class="faq-item">
+      <p class="q">Q: 插件侧边栏显示空白？</p>
+      <p class="a">A: 请确认 VSCode 版本 >= 1.85.0，WebviewView 需要此版本以上支持。也可尝试重新加载窗口 (<span class="inline-code">⌘R</span>)。</p>
+    </div>
+    <div class="faq-item">
+      <p class="q">Q: 如何更新插件？</p>
+      <p class="a">A: 下载最新版 <span class="inline-code">.vsix</span> 文件，用相同命令重新安装即可覆盖旧版本。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>更新方法</h2>
+    <p>下载最新版安装包，运行 <span class="inline-code">code --install-extension SonicNoteSync-vscode-&lt;版本号&gt;.vsix --force</span> 即可覆盖安装，无需先卸载旧版。</p>
+  </div>
+
+</div>
+
+<footer>SonicNoteSync-Vscode v1.0.0 · 妙记录音同步 VSCode 插件 · 发布者 easylinkin</footer>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const code = btn.parentElement.querySelector('code');
+    navigator.clipboard.writeText(code.textContent).then(() => {
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+      }, 1500);
+    });
+  });
+});
+</script>
+
+</body>
+</html>

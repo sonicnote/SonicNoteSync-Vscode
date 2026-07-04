@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SonicNote 妙记 — 全平台安装指南</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #2c3e50;
+    --text-secondary: #5a6c7d;
+    --border: #e2e8f0;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --green: #059669;
+    --purple: #7c3aed;
+    --orange: #ea580c;
+    --teal: #0d9488;
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    background: linear-gradient(180deg, #f0f4ff 0%, #f8f9fa 40%);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 40px 20px 60px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 48px; }
+  .header .logo {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    border-radius: 20px; display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 36px; margin-bottom: 18px;
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.3);
+  }
+  .header h1 {
+    font-size: 32px; font-weight: 800;
+    background: linear-gradient(135deg, #1e40af, #7c3aed);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+  .header .subtitle {
+    font-size: 16px; color: var(--text-secondary);
+    max-width: 500px; margin: 0 auto;
+  }
+
+  /* Section */
+  .section-title {
+    font-size: 16px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #64748b;
+    margin: 36px 0 14px 6px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 18px;
+    text-decoration: none; color: inherit;
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+  }
+
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .icon-ai { background: #ede9fe; }
+  .icon-zotero { background: #fef3c7; }
+  .icon-obsidian { background: #ede9fe; }
+  .icon-geek { background: #fce7f3; }
+
+  .card-body { flex: 1; min-width: 0; }
+  .card-body h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .card-body p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  .card-badge {
+    display: inline-block; padding: 2px 8px;
+    border-radius: 10px; font-size: 11px; font-weight: 600;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .badge-standard { background: #dbeafe; color: #1e40af; }
+  .badge-geek { background: #fce7f3; color: #9d174d; }
+  .badge-live { background: #d1fae5; color: #065f46; }
+  .badge-beta { background: #fef3c7; color: #92400e; }
+  .badge-dev { background: #f1f5f9; color: #64748b; }
+
+  .card-disabled {
+    opacity: 0.7; cursor: default; pointer-events: none;
+  }
+
+  .platform-tags {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;
+  }
+  .platform-tag {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 6px;
+    font-size: 11px; font-weight: 500;
+    background: #f1f5f9; color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+
+  .card-arrow {
+    color: #94a3b8; font-size: 18px; flex-shrink: 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center; margin-top: 48px;
+    padding: 24px; font-size: 13px; color: #94a3b8;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">🎙️</div>
+    <h1>SonicNote 妙记</h1>
+    <p class="subtitle">AI 录音转写与智能总结 — 全平台安装指南，选择你的使用场景开始</p>
+  </div>
+
+  <!-- AI Coding Agents -->
+  <div class="section-title">🤖 AI 编程助手</div>
+
+  <a class="card" href="https://www.skillhub.cn/skills/sonicnote" target="_blank">
+    <div class="card-icon icon-ai">🧠</div>
+    <div class="card-body">
+      <h3>SonicNote Skills <span class="card-badge badge-live">已上线</span></h3>
+      <p>在 AI 编程助手中一键安装 SonicNote 技能，直接用对话管理录音转写与总结</p>
+      <div class="platform-tags">
+        <span class="platform-tag">Claude Code</span>
+        <span class="platform-tag">Codex</span>
+        <span class="platform-tag">OpenCode</span>
+        <span class="platform-tag">Cursor</span>
+        <span class="platform-tag">OpenClaw</span>
+        <span class="platform-tag">Hermes</span>
+        <span class="platform-tag">CodeBuddy</span>
+      </div>
+    </div>
+    <span class="card-arrow">→</span>
+  </a>
+
+  <a class="card" href="https://ainote.easylinkin.com/download/mcp.html" target="_blank">
+    <div class="card-icon icon-ai">🔌</div>
+    <div class="card-body">
+      <h3>SonicNote MCP <span class="card-badge badge-live">已上线</span></h3>
+      <p>通过 MCP (Model Context Protocol) 接入 SonicNote，在任意 MCP 兼容客户端中使用</p>
+      <div class="platform-tags">
+        <span class="platform-tag">MCP</span>
+        <span class="platform-tag">Claude</span>
+        <span class="platform-tag">Codex</span>
+        <span class="platform-tag">Cursor</span>
+      </div>
+    </div>
+    <span class="card-arrow">→</span>
+  </a>
+
+  <!-- VSCode -->
+  <div class="section-title">🖥️ VSCode 插件</div>
+
+  <a class="card" href="https://linkaip.easylinkin.com/public/SonicNoteSync-vscode-install-guide.html" target="_blank">
+    <div class="card-icon icon-ai">💻</div>
+    <div class="card-body">
+      <h3>SonicNoteSync <span class="card-badge badge-standard">标准版</span> <span class="card-badge badge-beta">内测中</span></h3>
+      <p>VSCode 标准版插件，录音转写与 AI 总结无缝嵌入编辑器工作流</p>
+      <div class="platform-tags">
+        <span class="platform-tag">Cursor</span>
+        <span class="platform-tag">TRAE</span>
+        <span class="platform-tag">Windsurf</span>
+        <span class="platform-tag">VSCode</span>
+      </div>
+    </div>
+    <span class="card-arrow">→</span>
+  </a>
+
+  <div class="card card-disabled">
+    <div class="card-icon icon-geek">⚡</div>
+    <div class="card-body">
+      <h3>SonicNoteGeek <span class="card-badge badge-geek">极客版</span> <span class="card-badge badge-dev">开发中</span></h3>
+      <p>VSCode 极客版插件，面向高级用户，提供更多自定义与调试功能</p>
+      <div class="platform-tags">
+        <span class="platform-tag">Cursor</span>
+        <span class="platform-tag">TRAE</span>
+        <span class="platform-tag">Windsurf</span>
+        <span class="platform-tag">VSCode</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zotero -->
+  <div class="section-title">📚 Zotero 文献管理</div>
+
+  <a class="card" href="https://linkaip.easylinkin.com/public/sonic-note-sync-guide.html" target="_blank">
+    <div class="card-icon icon-zotero">📑</div>
+    <div class="card-body">
+      <h3>SonicNoteSync <span class="card-badge badge-standard">标准版</span> <span class="card-badge badge-beta">内测中</span></h3>
+      <p>Zotero 标准版插件，下载 .xpi 文件安装，同步录音笔记到文献库</p>
+      <div class="platform-tags">
+        <span class="platform-tag">Zotero 9</span>
+      </div>
+    </div>
+    <span class="card-arrow">→</span>
+  </a>
+
+  <div class="card card-disabled">
+    <div class="card-icon icon-geek">⚡</div>
+    <div class="card-body">
+      <h3>SonicNoteGeek <span class="card-badge badge-geek">极客版</span> <span class="card-badge badge-dev">开发中</span></h3>
+      <p>Zotero 极客版插件，面向高级用户，提供更多自定义与调试功能</p>
+      <div class="platform-tags">
+        <span class="platform-tag">Zotero 9</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Obsidian -->
+  <div class="section-title">📝 Obsidian 笔记</div>
+
+  <a class="card" href="https://ainote.easylinkin.com/download/obsidian-plugin.html" target="_blank">
+    <div class="card-icon icon-obsidian">💎</div>
+    <div class="card-body">
+      <h3>SonicNoteSync <span class="card-badge badge-standard">标准版</span> <span class="card-badge badge-live">已上线</span></h3>
+      <p>Obsidian 标准版插件，录音转写与 AI 总结直接嵌入笔记工作流</p>
+      <div class="platform-tags">
+        <span class="platform-tag">Obsidian</span>
+      </div>
+    </div>
+    <span class="card-arrow">→</span>
+  </a>
+
+  <a class="card" href="https://linkaip.easylinkin.com/public/sonicnotegeek-install.html" target="_blank">
+    <div class="card-icon icon-geek">⚡</div>
+    <div class="card-body">
+      <h3>SonicNoteGeek <span class="card-badge badge-geek">极客版</span> <span class="card-badge badge-beta">内测中</span></h3>
+      <p>Obsidian 极客版插件，面向高级用户，提供更多自定义与调试功能</p>
+      <div class="platform-tags">
+        <span class="platform-tag">Obsidian</span>
+      </div>
+    </div>
+    <span class="card-arrow">→</span>
+  </a>
+
+  <div class="footer">
+    SonicNote 妙记 &copy; 2026 &nbsp;·&nbsp; 录音转写 · AI 总结 · 知识同步
+  </div>
+
+</div>
+</body>
+</html>

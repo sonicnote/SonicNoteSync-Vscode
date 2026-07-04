@@ -1,0 +1,121 @@
+{
+  "name": "sonicnote-sync",
+  "displayName": "SonicNote Sync",
+  "description": "Sync recordings from SonicNote to local Markdown files",
+  "version": "1.0.0",
+  "publisher": "easylinkin",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "sonicnote",
+    "recording",
+    "sync",
+    "transcription"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sonicnote-sync-sidebar",
+          "title": "SonicNote Sync",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "sonicnote-sync-sidebar": [
+        {
+          "id": "sonicnote-sync.sidebarView",
+          "name": "SonicNote Sync",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "sonicnote-sync.sync",
+        "title": "同步录音",
+        "category": "SonicNote Sync",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "sonicnote-sync.login",
+        "title": "登录",
+        "category": "SonicNote Sync",
+        "icon": "$(sign-in)"
+      },
+      {
+        "command": "sonicnote-sync.logout",
+        "title": "登出",
+        "category": "SonicNote Sync"
+      },
+      {
+        "command": "sonicnote-sync.openSettings",
+        "title": "打开设置",
+        "category": "SonicNote Sync",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "sonicnote-sync.pickFolder",
+        "title": "选择同步文件夹",
+        "category": "SonicNote Sync",
+        "icon": "$(folder-opened)"
+      }
+    ],
+    "configuration": {
+      "title": "SonicNote Sync",
+      "properties": {
+        "sonicnote-sync.serverUrl": {
+          "type": "string",
+          "default": "https://ainote.easylinkin.com:18048/prod-api",
+          "description": "SonicNote 服务器地址。完整设置请使用命令: SonicNote Sync: 打开设置"
+        },
+        "sonicnote-sync.syncFolder": {
+          "type": "string",
+          "default": "",
+          "description": "同步文件存放目录 (绝对路径)。留空则使用工作区的默认相对路径。"
+        },
+        "sonicnote-sync.pageSize": {
+          "type": "number",
+          "default": 50,
+          "description": "每页获取的录音数量"
+        },
+        "sonicnote-sync.includeTranscript": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否包含逐字转录内容"
+        },
+        "sonicnote-sync.autoSyncOnOpen": {
+          "type": "boolean",
+          "default": false,
+          "description": "启动时自动同步"
+        },
+        "sonicnote-sync.resyncIntervalMinutes": {
+          "type": "number",
+          "default": 0,
+          "description": "定时重同步间隔 (分钟), 0 表示关闭。可选: 0, 60, 180, 360, 1440"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  }
+}
