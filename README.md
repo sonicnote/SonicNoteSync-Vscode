@@ -2,6 +2,8 @@
 
 将 [SonicNote（妙记）](https://ainote.easylinkin.com) 的录音内容同步到本地 Markdown 文件，在 VSCode 中管理和编辑。
 
+📖 [官方使用文档](https://ainote.easylinkin.com/#/resources/docs) · 🎬 [视频教程](https://www.bilibili.com/video/BV1XmJ36BEYb/?vd_source=e28745caa23df4182841fe10c0c4faff)
+
 ## 功能
 
 - **一键同步**：从 SonicNote 服务器拉取所有录音，生成本地 Markdown 文件
